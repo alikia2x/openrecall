@@ -1,99 +1,37 @@
-```
-   ____                   ____                  ____   
-  / __ \____  ___  ____  / __ \___  _________ _/ / /   
- / / / / __ \/ _ \/ __ \/ /_/ / _ \/ ___/ __ `/ / /    
-/ /_/ / /_/ /  __/ / / / _, _/  __/ /__/ /_/ / / /     
-\____/ .___/\___/_/ /_/_/ |_|\___/\___/\__,_/_/_/      
-    /_/                                                                                                                         
-```
-**Enjoy this project?** Show your support by starring it! ⭐️ Thank you!
+# OpenRewind
 
-Join our [Discord](https://discord.gg/RzvCYRgUkx) and/or [Telegram](https://t.me/+5DULWTesqUYwYjY0) community to stay informed of updates!
+OpenRewind is an open-source alternative to [rewind.ai](https://rewind.ai), forked from [OpenRecall](https://github.com/openrecall/openrecall).
 
-# Take Control of Your Digital Memory
+As this project is still in its early stages, you might not see significant progress just yet.
 
-OpenRecall is a fully open-source, privacy-first alternative to proprietary solutions like Microsoft's Windows Recall or Limitless' Rewind.ai. With OpenRecall, you can easily access your digital history, enhancing your memory and productivity without compromising your privacy.
+## To-dos
 
-## What does it do?
+### Update the OCR Engine
 
-OpenRecall captures your digital history through regularly taken snapshots, which are essentially screenshots. The text and images within these screenshots are analyzed and made searchable, allowing you to quickly find specific information by typing relevant keywords into OpenRecall. You can also manually scroll back through your history to revisit past activities.
+OpenRecall currently uses docTR as its OCR engine, but it performs inadequately. On my MacBook Air M2 (2022), processing a screenshot takes around 20 seconds, with CPU usage peaking at over 400%. During this time, screenshots cannot be captured, and the engine appears to recognize only Latin characters.
 
-https://github.com/openrecall/openrecall/assets/16676419/cfc579cb-165b-43e4-9325-9160da6487d2
+To address this, we plan to replace the OCR engine with a more efficient alternative that supports multiple writing systems. We are considering [Tesseract](https://github.com/tesseract-ocr/tesseract), which supports multiple languages and is faster, though it still falls short of our desired results. (As reference, rewind.ai runs on same machine with avearge CPU usage of 40%)
 
-## Why Choose OpenRecall?
+### Implement a Task Queue/Scheduler
 
-OpenRecall offers several key advantages over closed-source alternatives:
+Currently, OpenRecall's OCR recognition and database operations are synchronous (blocking). This results in increased screenshot frequency, as described in the previous section.
 
-- **Transparency**: OpenRecall is 100% open-source, allowing you to audit the source code for potential backdoors or privacy-invading features.
-- **Cross-platform Support**: OpenRecall works on Windows, macOS, and Linux, giving you the freedom to use it on your preferred operating system.
-- **Privacy-focused**: Your data is stored locally on your device, no internet connection or cloud is required. In addition, you have the option to encrypt the data on a removable disk for added security, read how in our [guide](docs/encryption.md) here. 
-- **Hardware Compatibility**: OpenRecall is designed to work with a [wide range of hardware](docs/hardware.md), unlike proprietary solutions that may require specific certified devices.
+Our next goal is to introduce a task queue to handle high-load tasks (such as OCR, indexing, and archiving) asynchronously. This will ensure that time-sensitive tasks (like capturing screenshots) are prioritized.
 
-<p align="center">
-  <a href="https://twitter.com/elonmusk/status/1792690964672450971" target="_blank">
-    <img src="images/black_mirror.png" alt="Elon Musk Tweet" width="400">
-  </a>
-</p>
+### Improve the Frontend
 
-## Features
+The current frontend of OpenRecall is quite basic. Given my expertise in web development, I will build a more robust frontend from scratch, using Python solely as a daemon/backend server.
 
-- **Time Travel**: Revisit and explore your past digital activities seamlessly across Windows, macOS, or Linux.
-- **Local-First AI**: OpenRecall harnesses the power of local AI processing to keep your data private and secure.
-- **Semantic Search**: Advanced local OCR interprets your history, providing robust semantic search capabilities.
-- **Full Control Over Storage**: Your data is stored locally, giving you complete control over its management and security.
+We are also considering using Electron to deliver a near-native experience, aiming to match the functionality of [rewind.ai](https://rewind.ai).
 
-<p align="center">
-  <img src="images/lisa_rewind.webp" alt="Lisa Rewind" width="400">
-</p>
+### Add More Features
 
+We will be implementing the [feature list](https://github.com/openrecall/openrecall/discussions/9) proposed in the OpenRecall repository. Stay tuned for updates.
 
-## Comparison
+### THE FURTHER FUTURE: Deployment & Refactoring
 
+We are exploring ways to simplify the download, installation, and usage of this Python-based program, especially as we introduce new technologies (such as web dev / Electron).
 
+Initially, we are considering Docker as a deployment solution. [Docker Desktop](https://www.docker.com/products/docker-desktop/) is available for macOS and Windows users and offers a more user-friendly experience compared to command-line Python installations and dependency management.
 
-| Feature          | OpenRecall                    | Windows Recall                                  | Rewind.ai                              |
-|------------------|-------------------------------|--------------------------------------------------|----------------------------------------|
-| Transparency     | Open-source                   | Closed-source                                    | Closed-source                          |
-| Supported Hardware | All                         | Copilot+ certified Windows hardware              | M1/M2 Apple Silicon                    |
-| OS Support       | Windows, macOS, Linux         | Windows                                          | macOS                                  |
-| Privacy          | On-device, self-hosted        | Microsoft's privacy policy applies               | Connected to ChatGPT                   |
-| Cost             | Free                          | Part of Windows 11 (requires specialized hardware) | Monthly subscription                   |
-
-## Quick links
-- [Roadmap](https://github.com/orgs/openrecall/projects/2) and you can [vote for your favorite features](https://github.com/openrecall/openrecall/discussions/9#discussion-6775473)
-- [FAQ](https://github.com/openrecall/openrecall/wiki/FAQ)
-
-## Get Started
-
-### Prerequisites
-- Python 3.11
-- MacOSX/Windows/Linux
-- Git
-
-To install:
-```
-python3 -m pip install --upgrade --no-cache-dir git+https://github.com/openrecall/openrecall.git
-```
-
-To run:
-```
-python3 -m openrecall.app
-```
-Open your browser to:
-[http://localhost:8082](http://localhost:8082) to access OpenRecall.
-
-## Arguments
-`--storage-path` (default: user data path for your OS): allows you to specify the path where the screenshots and database should be stored. We recommend [creating an encrypted volume](docs/encryption.md) to store your data.
-
-`--primary-monitor-only` (default: False): only record the primary monitor (rather than individual screenshots for other monitors)
-
-## Contribute
-
-As an open-source project, we welcome contributions from the community. If you'd like to help improve OpenRecall, please submit a pull request or open an issue on our GitHub repository.
-
-## Contact the maintainers
-mail@datatalk.be
-
-## License
-
-OpenRecall is released under the [AGPLv3](https://opensource.org/licenses/AGPL-3.0), ensuring that it remains open and accessible to everyone.
+However, Docker is a temporary solution. In the future, we plan to transition OpenRewind to the [Electron](https://www.electronjs.org/) technology stack and gradually migrate Python components to Node.js.
