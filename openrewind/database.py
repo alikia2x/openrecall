@@ -2,7 +2,7 @@ import sqlite3
 from collections import namedtuple
 from typing import Any, List
 
-from openrecall.config import db_path
+from openrewind.config import db_path
 
 Entry = namedtuple("Entry", ["id", "app", "title", "text", "timestamp", "embedding"])
 

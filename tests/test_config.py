@@ -1,6 +1,6 @@
 import pytest
 from unittest import mock
-from openrecall.config import get_appdata_folder
+from openrewind.config import get_appdata_folder
 
 def test_get_appdata_folder_windows(tmp_path):
     with mock.patch('sys.platform', 'win32'):

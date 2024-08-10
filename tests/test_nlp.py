@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from openrecall.nlp import cosine_similarity
+from openrewind.nlp import cosine_similarity
 
 def test_cosine_similarity_identical_vectors():
     a = np.array([1, 0, 0])
